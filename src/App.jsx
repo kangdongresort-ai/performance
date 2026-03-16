@@ -1,31 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Plus, Trash2, Download, User, Briefcase, Award, TrendingUp, 
-  ClipboardList, FileText, X, ShieldCheck, Info
+  ClipboardList, FileText, X, ShieldCheck
 } from 'lucide-react';
-import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-
-// --- Firebase Setup ---
-// 실제 데이터를 연결하려면 본인의 Firebase 프로젝트 설정값을 넣으세요.
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  // ... 생략 ...
-};
-// ⚠️ 당장 동작 확인만 하려면 아래 Auth 코드는 주석 처리하고 진행하는 것을 권장합니다.
-// const app = initializeApp(firebaseConfig);
-// const auth = getAuth(app);
-// ...
-//const db = getFirestore(app);
-//const appId = typeof __app_id !== 'undefined' ? __app_id : 'hr-assessment-app';
 
 const App = () => {
   const [role, setRole] = useState('team'); // 'team' or 'manager'
   const [showGuide, setShowGuide] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
   
   const [userInfo, setUserInfo] = useState({
     name: '',
@@ -46,22 +27,6 @@ const App = () => {
   });
 
   const [selfDevelopment, setSelfDevelopment] = useState('');
-
-  // --- Authentication ---
-  useEffect(() => {
-    const initAuth = async () => {
-      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-        await signInWithCustomToken(auth, __initial_auth_token);
-      } else {
-        await signInAnonymously(auth);
-      }
-    };
-    initAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-    });
-    return () => unsubscribe();
-  }, []);
 
   // --- 인사고과 평가지표(2025) 데이터 반영 ---
   const competencyGuideData = {
@@ -115,7 +80,7 @@ const App = () => {
           '지시/보고 중심의 업무를 수행하며 주어진 목표 수준에만 만족함',
           '일관된 목표 수행 및 성과를 보이며 자발적인 개선 태도를 견지함',
           '높은 직무 전문성과 성취욕으로 일관된 상향 목표 성과를 달성함',
-          '창의적 방법으로 지속적인 상향 목표를 설정하고 탁월한 성과를 창조함'
+          '창의적 방법으로 지속적인 상향 목표 설정하고 탁월한 성과를 창조함'
         ]
       },
       { 
@@ -156,7 +121,7 @@ const App = () => {
           '목표 및 방향 제시의 일관성이 부족, 회사의 목표 방향에 대한 이해도와 구성원을 독려하는 적극성 부족',
           '일관된 부서 목표 및 방향을 제시, 이에 부합하는 업무를 수행하며 일반적인 수준에서 구성원을 독려',
           '일관된 상향 목표와 업무 방향을 제시, 목표 부합한 업무수행을 위해 구성원을 독려, 스스로 솔선수범하는 자세를 보임',
-          '지속적이고 세부적인 상향 목표를 제시, 창의적·혁신적 업무 수행을 이끌고, 목표 달성을 위해 선도적으로 구성원 독려도'
+          '지속적이고 세부적인 상향 목표를 제시, 창의적·혁신적 업무 수행을 이끌고, 목표 달성을 위해 선도적으로 구성원 독려'
         ]
       },
       { 
@@ -233,7 +198,7 @@ const App = () => {
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8 text-slate-800 font-sans relative pb-24">
       
-      {/* Guide Modal - 2025 최신 지표 내용 */}
+      {/* Guide Modal */}
       {showGuide && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-6xl max-h-[92vh] overflow-hidden flex flex-col">
@@ -435,7 +400,7 @@ const App = () => {
           </div>
         </section>
 
-        {/* Sticky Actions - 보고서 발송 버튼 제거 */}
+        {/* Sticky Actions */}
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-4 bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow-2xl border border-slate-200">
           <button onClick={exportToWord} className="flex items-center gap-2 px-12 py-3 bg-slate-900 text-white rounded-xl font-bold hover:scale-105 transition-all active:scale-95 text-sm shadow-xl"><Download size={18} /> Word 다운로드</button>
         </div>
