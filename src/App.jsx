@@ -19,8 +19,8 @@ const firebaseConfig = {
 // const app = initializeApp(firebaseConfig);
 // const auth = getAuth(app);
 // ...
-const db = getFirestore(app);
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'hr-assessment-app';
+//const db = getFirestore(app);
+//const appId = typeof __app_id !== 'undefined' ? __app_id : 'hr-assessment-app';
 
 const App = () => {
   const [role, setRole] = useState('team'); // 'team' or 'manager'
